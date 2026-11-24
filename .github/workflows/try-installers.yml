@@ -1,0 +1,116 @@
+# Runs a published installer on real Windows, Mac and Linux machines, exactly as a person would: download the
+# zip from the release, install (no questions, no browser), check the app answers and signs in, uninstall and
+# check the data is kept. Start it by hand: Actions → Try the installers → Run workflow → the version.
+name: Try the installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to try, without the v (for example 2.1.2)"
+        required: true
+
+env:
+  VINATSAMA_UNATTENDED: "1"
+  VINATSAMA_PORT: "8799"
+  ZIPS: https://github.com/${{ github.repository }}/releases/download/v${{ inputs.version }}
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Download
+        shell: powershell
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -UseBasicParsing "$env:ZIPS/Vina-Tsama-${{ inputs.version }}-windows.zip" -OutFile win.zip
+          Expand-Archive win.zip -DestinationPath rel
+      - name: Install (Windows PowerShell 5.1, as the .cmd does)
+        shell: powershell
+        run: |
+          $top = (Get-ChildItem rel -Directory | Select-Object -First 1).FullName
+          & powershell -NoProfile -ExecutionPolicy Bypass -File "$top\app\packaging\windows\install.ps1" -Source "$top\app"
+          if ($LASTEXITCODE -ne 0) { throw "The installer failed ($LASTEXITCODE)" }
+      - name: The app runs and the sign-in link works
+        shell: powershell
+        run: |
+          $base = 'http://127.0.0.1:8799'
+          $ok = $false
+          foreach ($i in 1..90) {
+            try { $h = Invoke-RestMethod "$base/api/health"; if ($h.app -eq 'vina-tsama') { $ok = $true; break } } catch {}
+            Start-Sleep 2
+          }
+          $data = "$env:LOCALAPPDATA\VinaTsama"
+          if (-not $ok) { Get-Content "$data\vinatsama.log" -ErrorAction SilentlyContinue; throw 'The app did not start' }
+          Write-Host "Running version $($h.version)"
+          if ($h.version -ne '${{ inputs.version }}') { throw "Expected ${{ inputs.version }}" }
+          if (-not (Test-Path "$data\db.sqlite3")) { throw "No database in $data" }
+          $token = (Get-Content "$data\session_token").Trim()
+          $page = Invoke-WebRequest -UseBasicParsing "$base/auth?token=$token" -SessionVariable s
+          if ($page.Content -notmatch '<div id="root">') { throw 'The UI was not served' }
+          $me = Invoke-RestMethod "$base/api/v1/auth/me/" -WebSession $s
+          Write-Host "Signed in as $($me.username)"
+          $up = Invoke-RestMethod "$base/api/v1/updates/" -WebSession $s
+          Write-Host "Updates: installed=$($up.installed) system=$($up.system)"
+          if (-not $up.installed -or $up.system -ne 'windows') { throw 'The app does not see itself as an installed Windows copy' }
+          $lnk = Join-Path ([Environment]::GetFolderPath('Programs')) 'Vina Tsama.lnk'
+          if (-not (Test-Path $lnk)) { throw "No Start menu shortcut at $lnk" }
+      - name: Uninstall keeps the data
+        shell: powershell
+        run: |
+          & powershell -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\VinaTsama-app\uninstall.ps1"
+          Start-Sleep 3
+          if (Test-Path "$env:LOCALAPPDATA\VinaTsama-app") { throw 'The app folder is still there' }
+          if (-not (Test-Path "$env:LOCALAPPDATA\VinaTsama\db.sqlite3")) { throw 'The data was removed' }
+          Write-Host 'Uninstalled; data kept.'
+
+  mac:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Download and install
+        run: |
+          curl -fsSL -o mac.zip "$ZIPS/Vina-Tsama-${{ inputs.version }}-mac.zip"
+          unzip -q mac.zip -d rel
+          bash "$(ls -d rel/*/ | head -1)Install Vina Tsama.command"
+      - name: The app runs and the sign-in link works
+        run: |
+          base=http://127.0.0.1:8799
+          for i in $(seq 90); do curl -fs $base/api/health | grep -q vina-tsama && break; sleep 2; done
+          curl -fs $base/api/health | grep -q '"version":"${{ inputs.version }}"'
+          data="$HOME/Library/Application Support/VinaTsama"
+          token="$(cat "$data/session_token")"
+          curl -fs -c jar "$base/auth?token=$token" -L | grep -q '<div id="root">'
+          curl -fs -b jar $base/api/v1/auth/me/
+          test -d "$HOME/Applications/Vina Tsama.app"
+      - name: Uninstall keeps the data
+        run: |
+          bash "$HOME/Library/Application Support/VinaTsama-app/Uninstall Vina Tsama.command"
+          test ! -d "$HOME/Library/Application Support/VinaTsama-app"
+          test -f "$HOME/Library/Application Support/VinaTsama/db.sqlite3"
+
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Download and install
+        run: |
+          curl -fsSL -o linux.zip "$ZIPS/Vina-Tsama-${{ inputs.version }}-linux.zip"
+          unzip -q linux.zip -d rel
+          bash "$(ls -d rel/*/ | head -1)Install Vina Tsama.sh"
+      - name: The app runs and the sign-in link works
+        run: |
+          base=http://127.0.0.1:8799
+          for i in $(seq 90); do curl -fs $base/api/health | grep -q vina-tsama && break; sleep 2; done
+          curl -fs $base/api/health | grep -q '"version":"${{ inputs.version }}"'
+          data="$HOME/.local/share/vinatsama"
+          token="$(cat "$data/session_token")"
+          curl -fs -c jar "$base/auth?token=$token" -L | grep -q '<div id="root">'
+          curl -fs -b jar $base/api/v1/auth/me/
+          test -x "$HOME/.local/bin/vina-tsama"
+      - name: Uninstall keeps the data
+        run: |
+          bash "$HOME/.local/share/vinatsama-app/uninstall.sh"
+          test ! -d "$HOME/.local/share/vinatsama-app"
+          test -f "$HOME/.local/share/vinatsama/db.sqlite3"
