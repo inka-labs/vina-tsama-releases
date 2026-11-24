@@ -12,7 +12,9 @@ computer.
 3. Start the installer:
    - **Windows:** double-click **Install Vina Tsama**. If Windows shows "Windows protected your PC", click
      **More info**, then **Run anyway**.
-   - **Mac:** right-click **Install Vina Tsama**, choose **Open**, then **Open** again (only the first time).
+   - **Mac:** double-click **Install Vina Tsama**. macOS says it "could not verify" it: click **Done**, open
+     **System Settings → Privacy & Security**, scroll down to Security and click **Open Anyway** (only the
+     first time).
    - **Linux:** right-click **Install Vina Tsama.sh** and choose **Run as a Program**.
 
 No administrator password is needed. The first install downloads what it needs (a few hundred MB, a few
