@@ -4,6 +4,8 @@ Installers for **Vina Tsama**, an app for a food business: orders, deliveries, p
 expenses and reports. It runs on your own computer and opens in your web browser. Your data stays on that
 computer.
 
+**Download and update page: https://ttemu34.github.io/vina-tsama-releases/** (the easiest place to start).
+
 ## Install
 
 1. Open [the latest release](../../releases/latest) and download the file for your computer:

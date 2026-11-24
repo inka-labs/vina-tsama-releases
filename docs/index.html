@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vina Tsama: download and update</title>
+<meta name="description" content="Get the latest Vina Tsama for Windows, Mac or Linux, and see how to update the copy you already have.">
+<link rel="icon" href="icon.png">
+<meta property="og:title" content="Vina Tsama: download and update">
+<meta property="og:description" content="Get the latest Vina Tsama for Windows, Mac or Linux, and see how to update the copy you already have.">
+<meta property="og:image" content="https://ttemu34.github.io/vina-tsama-releases/icon.png">
+<style>
+  :root {
+    --bg: #fffaf3;
+    --card: #ffffff;
+    --ink: #2a1a10;
+    --muted: #6f5d50;
+    --line: #ecdfcf;
+    --brand: #b45309;
+    --brand-dark: #92400e;
+    --brand-soft: #fef3c7;
+    --brand-ink: #78350f;
+    --pink: #c8326b;
+    --ok: #166534;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a130e;
+      --card: #251b14;
+      --ink: #f6ece2;
+      --muted: #bda996;
+      --line: #3d2e22;
+      --brand: #d97706;
+      --brand-dark: #f59e0b;
+      --brand-soft: #3b2a12;
+      --brand-ink: #fcd34d;
+      --pink: #f38bb0;
+      --ok: #86efac;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  [hidden] { display: none !important; }
+  a { color: var(--brand); }
+  a:hover { color: var(--brand-dark); }
+  :focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  header.top { padding: 28px 0 8px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img { width: 64px; height: 64px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+  .brand b { display: block; font-size: 22px; line-height: 1.2; }
+  .brand span { color: var(--muted); font-size: 15px; }
+
+  h1 { font-size: clamp(28px, 6vw, 40px); line-height: 1.15; margin: 28px 0 10px; letter-spacing: -0.01em; text-wrap: balance; }
+  h2 { font-size: 24px; line-height: 1.25; margin: 0 0 6px; }
+  h3 { font-size: 18px; margin: 22px 0 6px; }
+  p { margin: 0 0 12px; }
+  .lead { font-size: 19px; color: var(--muted); max-width: 60ch; }
+  section { padding: 34px 0; border-top: 1px solid var(--line); }
+  section.first { border-top: 0; padding-top: 8px; }
+  .hint { color: var(--muted); font-size: 15px; }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .get { margin-top: 22px; }
+  .get .ver { font-weight: 600; margin: 0 0 14px; }
+  .get .ver small { font-weight: 400; color: var(--muted); font-size: 15px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 54px; padding: 12px 24px; border-radius: 14px;
+    background: var(--brand); color: #fff; font-weight: 700; font-size: 19px;
+    text-decoration: none; border: 0; cursor: pointer;
+  }
+  .btn:hover { background: var(--brand-dark); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn, .btn:hover { color: #1a130e; } }
+  .btn svg { flex: none; }
+  .others { margin: 14px 0 0; font-size: 16px; }
+  .others a { white-space: nowrap; }
+
+  .note { background: var(--brand-soft); color: var(--brand-ink); border-radius: 14px; padding: 14px 16px; margin: 16px 0 0; font-size: 16px; }
+  .note a { color: inherit; font-weight: 600; }
+
+  ol.steps { list-style: none; counter-reset: s; margin: 16px 0 0; padding: 0; }
+  ol.steps > li { counter-increment: s; position: relative; padding: 0 0 16px 46px; }
+  ol.steps > li:last-child { padding-bottom: 0; }
+  ol.steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--brand-soft); color: var(--brand-ink);
+    font-weight: 700; font-size: 16px; display: grid; place-items: center;
+  }
+  ol.steps p { margin: 4px 0 0; color: var(--muted); font-size: 16px; }
+  .ui { font-weight: 600; white-space: nowrap; }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 4px; }
+  .tabs button {
+    font: inherit; font-weight: 600; min-height: 44px; padding: 8px 18px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer;
+  }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .notes h4 { font-size: 17px; margin: 14px 0 4px; }
+  .notes ul { margin: 6px 0 12px; padding-left: 22px; }
+  .notes li { margin-bottom: 8px; }
+  .when { color: var(--muted); font-size: 15px; margin: 0 0 8px; }
+
+  details { border-top: 1px solid var(--line); }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; padding: 14px 28px 14px 0; font-weight: 600; list-style: none; position: relative; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 4px; top: 10px; font-size: 24px; font-weight: 400; color: var(--muted); }
+  details[open] summary::after { content: "–"; }
+  details > div { padding: 0 0 16px; color: var(--muted); }
+  details > div p:last-child { margin-bottom: 0; }
+  code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--brand-soft); color: var(--brand-ink); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+
+  footer { padding: 28px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="brand">
+    <img src="icon.png" alt="" width="64" height="64">
+    <div><b>Vina Tsama</b><span>Orders, deliveries, payments and reports for a food business</span></div>
+  </div>
+</header>
+
+<main>
+<section class="first" aria-labelledby="t-get">
+  <h1 id="t-get">Get the latest Vina Tsama</h1>
+  <p class="lead">Vina Tsama is installed on your own computer and opens in your web browser. Your orders and customers stay on that computer.</p>
+
+  <div class="card get">
+    <p class="ver" id="ver">Latest version <small id="ver-date"></small></p>
+    <a class="btn" id="main-btn" href="https://github.com/ttemu34/vina-tsama-releases/releases/latest">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+      <span id="main-btn-text">Open the download page</span>
+    </a>
+    <p class="others" id="others">On the download page, pick the file ending in <b>windows.zip</b>, <b>mac.zip</b> or <b>linux.zip</b>.</p>
+    <p class="note" id="phone-note" hidden>You seem to be on a phone or tablet. Vina Tsama is installed on a computer, so open this page there: <b>ttemu34.github.io/vina-tsama-releases</b></p>
+  </div>
+</section>
+
+<section aria-labelledby="t-update">
+  <h2 id="t-update">Already using Vina Tsama? Update from inside the app</h2>
+  <p class="hint">You don't need to download anything from this page. Vina Tsama looks for a newer version once a day.</p>
+  <ol class="steps">
+    <li>Open Vina Tsama.
+      <p>When a newer version is out, a bar at the top says “Vina Tsama … is ready to install”.</p></li>
+    <li>Click <span class="ui">Update</span>, then <span class="ui">Update now</span>.
+      <p>Finish what you are typing first. The app restarts by itself and the page comes back after a few minutes.</p></li>
+    <li>That's it.
+      <p>Your orders, customers and expenses are kept, and a backup is made before anything changes.</p></li>
+  </ol>
+  <p class="note">No bar at the top? Go to <b>Settings → App &amp; updates</b>. It shows the version you have. Click <b>Check now</b>, then <b>Update to …</b> if one is offered.</p>
+  <p class="hint" style="margin-top:14px">If the update inside the app doesn't work, or your version is older than 2.1.1, download the installer above and run it as described below. It updates the copy you have and keeps your data.</p>
+</section>
+
+<section aria-labelledby="t-install">
+  <h2 id="t-install">Install it on a computer</h2>
+  <p class="hint">For a new computer, or to update by hand. No administrator password is needed.</p>
+
+  <div class="tabs" role="tablist" aria-label="Your computer">
+    <button role="tab" id="tab-windows" aria-controls="p-windows" aria-selected="true" data-os="windows">Windows</button>
+    <button role="tab" id="tab-mac" aria-controls="p-mac" aria-selected="false" data-os="mac">Mac</button>
+    <button role="tab" id="tab-linux" aria-controls="p-linux" aria-selected="false" data-os="linux">Linux</button>
+  </div>
+
+  <div role="tabpanel" id="p-windows" aria-labelledby="tab-windows">
+    <ol class="steps">
+      <li>Download the Windows file with the button at the top.
+        <p>It lands in your Downloads folder, named <span data-file="windows">Vina-Tsama-…-windows.zip</span>.</p></li>
+      <li>Right-click the downloaded file and choose <span class="ui">Extract All</span>, then <span class="ui">Extract</span>.
+        <p>This step matters: the installer does not work from inside the zip file.</p></li>
+      <li>In the folder that opens, double-click <span class="ui">Install Vina Tsama</span>.
+        <p>If Windows shows “Windows protected your PC”, click <b>More info</b>, then <b>Run anyway</b>. If it asks “Do you want to run this file?”, click <b>Run</b>.</p></li>
+      <li>Wait while the window shows the progress.
+        <p>The first install downloads a few hundred MB and takes a few minutes. Keep the internet on.</p></li>
+      <li>Vina Tsama opens in your browser.
+        <p>Next time, open <b>Vina Tsama</b> from the Start menu or the Desktop.</p></li>
+    </ol>
+  </div>
+
+  <div role="tabpanel" id="p-mac" aria-labelledby="tab-mac" hidden>
+    <ol class="steps">
+      <li>Download the Mac file with the button at the top.
+        <p>It lands in your Downloads folder, named <span data-file="mac">Vina-Tsama-…-mac.zip</span>.</p></li>
+      <li>Double-click the downloaded file to unzip it, then open the new <b>Vina Tsama</b> folder.</li>
+      <li>Double-click <span class="ui">Install Vina Tsama</span>.
+        <p>The first time, macOS says it “could not verify” the installer. Click <b>Done</b> (not “Move to Bin”).</p></li>
+      <li>Open <span class="ui">System Settings → Privacy &amp; Security</span>, scroll down to Security and click <span class="ui">Open Anyway</span>.
+        <p>Confirm with your password or Touch ID. You only do this once. It appears because the installer isn't registered with Apple.</p></li>
+      <li>Wait while the window shows the progress.
+        <p>The first install downloads a few hundred MB and takes a few minutes. Keep the internet on.</p></li>
+      <li>Vina Tsama opens in your browser.
+        <p>Next time, open <b>Vina Tsama</b> from Applications, or press ⌘ Space and type “Vina”.</p></li>
+    </ol>
+  </div>
+
+  <div role="tabpanel" id="p-linux" aria-labelledby="tab-linux" hidden>
+    <ol class="steps">
+      <li>Download the Linux file with the button at the top.
+        <p>It is named <span data-file="linux">Vina-Tsama-…-linux.zip</span>.</p></li>
+      <li>Right-click the downloaded file and choose <span class="ui">Extract</span>.</li>
+      <li>In the new folder, right-click <span class="ui">Install Vina Tsama.sh</span> and choose <span class="ui">Run as a Program</span>.</li>
+      <li>Wait while the window shows the progress.
+        <p>The first install downloads a few hundred MB and takes a few minutes. Keep the internet on.</p></li>
+      <li>Vina Tsama opens in your browser.
+        <p>Next time, open <b>Vina Tsama</b> from the apps menu.</p></li>
+    </ol>
+  </div>
+
+  <p class="note">Only the first install needs the internet. After that Vina Tsama opens straight away, with or without a connection.</p>
+</section>
+
+<section aria-labelledby="t-new">
+  <h2 id="t-new">What's new</h2>
+  <div id="news">
+    <p class="hint">See the list of changes on the <a href="https://github.com/ttemu34/vina-tsama-releases/releases">releases page</a>.</p>
+  </div>
+</section>
+
+<section aria-labelledby="t-q">
+  <h2 id="t-q" style="margin-bottom:16px">Questions</h2>
+
+  <details>
+    <summary>Which version do I have?</summary>
+    <div><p>In Vina Tsama, open <b>Settings → App &amp; updates</b>. The version is at the top, with “Up to date” when there is nothing newer.</p></div>
+  </details>
+  <details>
+    <summary>Will updating delete my orders or customers?</summary>
+    <div><p>No. Updating replaces only the app. Your orders, customers and expenses are kept, and a backup is made before anything changes. Uninstalling doesn't delete your data either.</p></div>
+  </details>
+  <details>
+    <summary>Do I need the internet to use it?</summary>
+    <div><p>Only to install and to update. Day to day, Vina Tsama runs on your computer and works without a connection.</p></div>
+  </details>
+  <details>
+    <summary>I had the old “VinaTsama” app. What do I do?</summary>
+    <div>
+      <p>Close it and remove it first, then install this one. Your orders, customers and expenses are picked up by the new version automatically.</p>
+      <p><b>Windows:</b> Settings → Apps → Installed apps → VinaTsama → Uninstall.<br>
+         <b>Mac:</b> quit it, then drag VinaTsama from Applications to the Bin.</p>
+      <p>Don't run the old and the new app at the same time.</p>
+    </div>
+  </details>
+  <details>
+    <summary>How do I remove Vina Tsama?</summary>
+    <div>
+      <p><b>Windows:</b> Settings → Apps → Vina Tsama → Uninstall.<br>
+         <b>Mac:</b> double-click <b>Uninstall Vina Tsama</b> in the folder you downloaded.<br>
+         <b>Linux:</b> run <code>bash ~/.local/share/vinatsama-app/uninstall.sh</code></p>
+      <p>Your data is not deleted.</p>
+    </div>
+  </details>
+  <details>
+    <summary>The installer stops or shows an error</summary>
+    <div>
+      <p>Check these first:</p>
+      <p>1. The zip file was extracted (Windows: right-click → Extract All) and you opened the installer from the extracted folder.<br>
+         2. The internet is on. The first install downloads a few hundred MB.<br>
+         3. On a Mac, you clicked <b>Open Anyway</b> in System Settings → Privacy &amp; Security.</p>
+      <p>If it still fails, take a photo of the installer window showing its last lines and send it to the person who set Vina Tsama up for you.</p>
+    </div>
+  </details>
+  <details>
+    <summary>How do I check that a download is genuine?</summary>
+    <div>
+      <p>Each release has a file named <code>SHA256SUMS.txt</code>. Compare the line for your file with the result of:</p>
+      <p><b>Windows (PowerShell):</b> <code>Get-FileHash .\Vina-Tsama-*-windows.zip</code><br>
+         <b>Mac / Linux:</b> <code>shasum -a 256 Vina-Tsama-*-mac.zip</code></p>
+      <p>The app does this check by itself when it updates.</p>
+    </div>
+  </details>
+</section>
+</main>
+
+<footer>
+  <p>All versions and files: <a href="https://github.com/ttemu34/vina-tsama-releases/releases">github.com/ttemu34/vina-tsama-releases/releases</a></p>
+</footer>
+</div>
+
+<script>
+(function () {
+  var REPO = "ttemu34/vina-tsama-releases";
+  var API = "https://api.github.com/repos/" + REPO + "/releases?per_page=20";
+  var NAMES = { windows: "Windows", mac: "Mac", linux: "Linux" };
+  var $ = function (id) { return document.getElementById(id); };
+
+  // Which computer is this?
+  function detect() {
+    var ua = navigator.userAgent || "";
+    var touchMac = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1; // iPad
+    if (/Android|iPhone|iPad|iPod/i.test(ua) || touchMac) return "phone";
+    if (/Windows/i.test(ua)) return "windows";
+    if (/Macintosh|Mac OS X/i.test(ua)) return "mac";
+    if (/Linux|X11|CrOS/i.test(ua)) return "linux";
+    return null;
+  }
+  var os = detect();
+
+  // Install steps: one tab per system
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function show(which, focus) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.os === which;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      $("p-" + t.dataset.os).hidden = !on;
+      if (on && focus) t.focus();
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { show(t.dataset.os); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      var n = (i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+      show(tabs[n].dataset.os, true);
+    });
+  });
+  show(NAMES[os] ? os : "windows");
+  if (os === "phone") $("phone-note").hidden = false;
+
+  // The latest release, straight from GitHub
+  function el(tag, text, attrs) {
+    var n = document.createElement(tag);
+    if (text != null) n.textContent = text;
+    for (var k in attrs || {}) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+  function fileFor(release, system) {
+    var found = (release.assets || []).filter(function (a) {
+      return a.name.slice(-(system.length + 5)) === "-" + system + ".zip";
+    })[0];
+    return found || null;
+  }
+  function day(iso) {
+    try { return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }); }
+    catch (e) { return ""; }
+  }
+  // Release notes are short Markdown: headings, bullets and **bold**.
+  function bold(parent, text) {
+    text.split(/\*\*(.+?)\*\*/g).forEach(function (part, i) {
+      if (part) parent.appendChild(i % 2 ? el("b", part) : document.createTextNode(part));
+    });
+  }
+  function notes(md) {
+    var box = el("div", null, { "class": "notes" }), list = null;
+    (md || "").replace(/\r/g, "").split("\n").forEach(function (line) {
+      var s = line.trim();
+      if (!s) { list = null; return; }
+      var bullet = /^[-*]\s+(.*)$/.exec(s), head = /^#{1,6}\s+(.*)$/.exec(s);
+      if (bullet) {
+        if (!list) { list = el("ul"); box.appendChild(list); }
+        var li = el("li"); bold(li, bullet[1]); list.appendChild(li);
+      } else {
+        list = null;
+        var node = el(head ? "h4" : "p"); bold(node, head ? head[1] : s); box.appendChild(node);
+      }
+    });
+    return box;
+  }
+
+  function render(all) {
+    var live = all.filter(function (r) { return !r.draft && !r.prerelease; });
+    if (!live.length) return;
+    var latest = live[0], version = latest.tag_name.replace(/^v/, "");
+
+    $("ver").firstChild.textContent = "Latest version: " + version + " ";
+    $("ver-date").textContent = "· released " + day(latest.published_at);
+
+    var mine = NAMES[os] ? fileFor(latest, os) : null;
+    var others = $("others");
+    others.textContent = "";
+    if (mine) {
+      $("main-btn").href = mine.browser_download_url;
+      $("main-btn-text").textContent = "Download for " + NAMES[os];
+      others.appendChild(document.createTextNode("Other computers: "));
+    } else {
+      others.appendChild(document.createTextNode("Choose your computer: "));
+      $("main-btn").hidden = true;
+    }
+    var first = true;
+    Object.keys(NAMES).forEach(function (system) {
+      var f = fileFor(latest, system);
+      if (!f || f === mine) return;
+      if (!first) others.appendChild(document.createTextNode(" · "));
+      first = false;
+      others.appendChild(el("a", (mine ? "" : "Download for ") + NAMES[system], { href: f.browser_download_url }));
+    });
+    Object.keys(NAMES).forEach(function (system) {
+      var f = fileFor(latest, system), slot = document.querySelector('[data-file="' + system + '"]');
+      if (f && slot) slot.textContent = f.name;
+    });
+
+    var news = $("news");
+    news.textContent = "";
+    news.appendChild(el("p", "Version " + version + " · " + day(latest.published_at), { "class": "when" }));
+    news.appendChild(notes(latest.body));
+    var older = live.slice(1).filter(function (r) { return (r.body || "").trim(); });
+    if (older.length) {
+      news.appendChild(el("h3", "Earlier versions"));
+      older.forEach(function (r) {
+        var d = el("details"), inner = el("div");
+        d.appendChild(el("summary", "Version " + r.tag_name.replace(/^v/, "") + " · " + day(r.published_at)));
+        inner.appendChild(notes(r.body));
+        d.appendChild(inner);
+        news.appendChild(d);
+      });
+    }
+  }
+
+  // Kept for the visit, so reloading doesn't ask GitHub again.
+  var KEY = "vt-releases";
+  try {
+    var saved = JSON.parse(sessionStorage.getItem(KEY) || "null");
+    if (saved && Date.now() - saved.at < 10 * 60 * 1000) { render(saved.data); return; }
+  } catch (e) { /* no storage: ask GitHub */ }
+
+  fetch(API, { headers: { Accept: "application/vnd.github+json" } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      render(data);
+      try { sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), data: data })); } catch (e) { /* fine */ }
+    })
+    .catch(function () { /* the page already links to the download page */ });
+})();
+</script>
+</body>
+</html>
