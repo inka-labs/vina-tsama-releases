@@ -1,10 +1,14 @@
 # Vina Tsama downloads
 
+![The Vina Tsama dashboard: sales, orders, money collected and profit for the month](docs/img/overview.png)
+
+**[See how it works](https://inka-labs.github.io/vina-tsama/)**: a short tour with screenshots.
+
 Installers for **Vina Tsama**, an app for a food business: orders, deliveries, payments, invoices and receipts,
 expenses and reports. It runs on your own computer and opens in your web browser. Your data stays on that
 computer.
 
-**Download and update page: https://ttemu34.github.io/vina-tsama-releases/** (the easiest place to start).
+**Download and update page: https://inka-labs.github.io/vina-tsama-releases/** (the easiest place to start).
 
 ## Install
 
